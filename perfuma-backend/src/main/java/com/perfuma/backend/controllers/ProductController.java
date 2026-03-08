@@ -52,4 +52,30 @@ public class ProductController {
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Ultrix-style aliases
+    @GetMapping("/allProduct")
+    public List<Product> getAllProductsAlias() {
+        return productService.getAllProducts();
+    }
+
+    @PostMapping("/addProduct")
+    public Product addProductAlias(@RequestBody Product product) {
+        return productService.saveProduct(product);
+    }
+
+    @PutMapping("/updateProduct/{id}")
+    public ResponseEntity<Product> updateProductAlias(@PathVariable Long id, @RequestBody Product productDetails) {
+        Product updatedProduct = productService.updateProduct(id, productDetails);
+        if (updatedProduct != null) {
+            return ResponseEntity.ok(updatedProduct);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/deleteProduct/{id}")
+    public ResponseEntity<Void> deleteProductAlias(@PathVariable Long id) {
+        productService.deleteProduct(id);
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,5 +1,8 @@
 const API_BASE_URL = "http://localhost:8080/api/products";
+const LEGACY_PRODUCT_BASE = "http://localhost:8080/products";
+const USER_BASE_URL = "http://localhost:8080/users";
 const CART_KEY = "perfuma-cart";
+const SESSION_KEY = "perfuma-session";
 const FALLBACK_IMAGE = "https://via.placeholder.com/600x600?text=Perfuma";
 
 const productsGrid = document.getElementById("products-grid");
@@ -23,10 +26,40 @@ const modalDescription = document.getElementById("modal-description");
 const modalStock = document.getElementById("modal-stock");
 const modalPrice = document.getElementById("modal-price");
 const modalAddCart = document.getElementById("modal-add-cart");
+const loginBtn = document.getElementById("login-btn");
+const registerBtn = document.getElementById("register-btn");
+const logoutBtn = document.getElementById("logout-btn");
+const adminLink = document.getElementById("admin-link");
+const adminPanel = document.getElementById("admin-panel");
+const adminProductForm = document.getElementById("admin-product-form");
+const adminProductsList = document.getElementById("admin-products-list");
+const cancelEditBtn = document.getElementById("cancel-edit");
+const authModal = document.getElementById("auth-modal");
+const closeAuthModal = document.getElementById("close-auth-modal");
+const authModalTitle = document.getElementById("auth-modal-title");
+const authForm = document.getElementById("auth-form");
+const authName = document.getElementById("auth-name");
+const authEmail = document.getElementById("auth-email");
+const authPassword = document.getElementById("auth-password");
+const authRole = document.getElementById("auth-role");
+const productIdInput = document.getElementById("product-id");
+const productNameInput = document.getElementById("product-name");
+const productBrandInput = document.getElementById("product-brand");
+const productPriceInput = document.getElementById("product-price");
+const productStockInput = document.getElementById("product-stock");
+const productSizeInput = document.getElementById("product-size");
+const productCategoryInput = document.getElementById("product-category");
+const productImageInput = document.getElementById("product-image");
+const productDescriptionInput = document.getElementById("product-description");
+const heroSection = document.querySelector(".hero-section");
+const productsSection = document.getElementById("products");
+const aboutSection = document.getElementById("about");
 
 let products = [];
 let selectedProduct = null;
 let cart = loadCart();
+let currentUser = loadSession();
+let authMode = "login";
 
 function formatPrice(value) {
     const amount = Number(value) || 0;
@@ -45,6 +78,24 @@ function loadCart() {
     }
 }
 
+function loadSession() {
+    try {
+        return JSON.parse(localStorage.getItem(SESSION_KEY));
+    } catch (error) {
+        return null;
+    }
+}
+
+function saveSession(user) {
+    currentUser = user;
+    localStorage.setItem(SESSION_KEY, JSON.stringify(user));
+}
+
+function clearSession() {
+    currentUser = null;
+    localStorage.removeItem(SESSION_KEY);
+}
+
 function saveCart() {
     localStorage.setItem(CART_KEY, JSON.stringify(cart));
 }
@@ -56,6 +107,41 @@ function showError(message) {
 
 function hideError() {
     errorElement.classList.add("hidden");
+}
+
+function isAdmin() {
+    return currentUser?.role === "ADMIN";
+}
+
+function isCustomer() {
+    return currentUser?.role === "CUS";
+}
+
+function updateAuthUI() {
+    const loggedIn = Boolean(currentUser);
+    loginBtn.classList.toggle("hidden", loggedIn);
+    registerBtn.classList.toggle("hidden", loggedIn);
+    logoutBtn.classList.toggle("hidden", !loggedIn);
+    adminLink.classList.toggle("hidden", !isAdmin());
+    adminPanel.classList.toggle("hidden", !isAdmin());
+    cartToggle.classList.toggle("hidden", isAdmin());
+    applyRoute();
+}
+
+function setSectionVisibility(showMain, showAdmin) {
+    heroSection.classList.toggle("hidden", !showMain);
+    productsSection.classList.toggle("hidden", !showMain);
+    aboutSection.classList.toggle("hidden", !showMain);
+    adminPanel.classList.toggle("hidden", !showAdmin);
+}
+
+function applyRoute() {
+    const route = (window.location.hash || "#home").replace("#", "");
+    if (route === "admin-panel" && isAdmin()) {
+        setSectionVisibility(false, true);
+        return;
+    }
+    setSectionVisibility(true, false);
 }
 
 function createProductCard(product) {
@@ -99,6 +185,29 @@ function renderProducts(items) {
     });
 }
 
+function renderAdminProducts() {
+    if (!isAdmin()) {
+        return;
+    }
+
+    adminProductsList.innerHTML = "";
+    products.forEach((product) => {
+        const row = document.createElement("div");
+        row.className = "admin-product-row";
+        row.innerHTML = `
+            <div>
+                <strong>${product.name}</strong>
+                <p>${product.brand} - ${formatPrice(product.price)} - Stock: ${product.stockQuantity}</p>
+            </div>
+            <div>
+                <button class="plain-button" type="button" data-action="edit" data-id="${product.id}">Edit</button>
+                <button class="plain-button" type="button" data-action="delete" data-id="${product.id}">Delete</button>
+            </div>
+        `;
+        adminProductsList.appendChild(row);
+    });
+}
+
 function getFilteredProducts() {
     const search = searchInput.value.trim().toLowerCase();
     const category = categoryFilter.value;
@@ -124,6 +233,7 @@ async function fetchProducts() {
         }
         products = await response.json();
         renderProducts(products);
+        renderAdminProducts();
     } catch (error) {
         showError("Could not load products. Ensure the Spring Boot API is running on http://localhost:8080.");
     } finally {
@@ -168,6 +278,11 @@ function syncCartUI() {
 }
 
 function addToCart(productId) {
+    if (!isCustomer()) {
+        showError("Please login as a customer to add items to cart.");
+        return;
+    }
+
     const product = products.find((item) => item.id === productId);
     if (!product) {
         return;
@@ -185,6 +300,118 @@ function addToCart(productId) {
     }
     saveCart();
     syncCartUI();
+}
+
+function openAuthModal(mode) {
+    authMode = mode;
+    authModalTitle.textContent = mode === "login" ? "Login" : "Signup";
+    authName.classList.toggle("hidden", mode === "login");
+    authRole.classList.toggle("hidden", mode === "login");
+    authModal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+}
+
+function closeAuthDialog() {
+    authModal.classList.add("hidden");
+    if (modal.classList.contains("hidden") && !cartSidebar.classList.contains("open")) {
+        overlay.classList.add("hidden");
+    }
+}
+
+function fillAdminForm(product) {
+    productIdInput.value = product.id;
+    productNameInput.value = product.name || "";
+    productBrandInput.value = product.brand || "";
+    productPriceInput.value = product.price || "";
+    productStockInput.value = product.stockQuantity || 0;
+    productSizeInput.value = product.size || "";
+    productCategoryInput.value = product.category || "";
+    productImageInput.value = product.imageUrl || "";
+    productDescriptionInput.value = product.description || "";
+}
+
+function resetAdminForm() {
+    adminProductForm.reset();
+    productIdInput.value = "";
+}
+
+async function saveAdminProduct(event) {
+    event.preventDefault();
+    const id = productIdInput.value;
+    const payload = {
+        name: productNameInput.value,
+        brand: productBrandInput.value,
+        price: Number(productPriceInput.value),
+        stockQuantity: Number(productStockInput.value),
+        size: productSizeInput.value ? Number(productSizeInput.value) : 0,
+        category: productCategoryInput.value,
+        imageUrl: productImageInput.value,
+        description: productDescriptionInput.value
+    };
+
+    const url = id ? `${LEGACY_PRODUCT_BASE}/updateProduct/${id}` : `${LEGACY_PRODUCT_BASE}/addProduct`;
+    const method = id ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+        method,
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+        showError("Failed to save product.");
+        return;
+    }
+
+    resetAdminForm();
+    await fetchProducts();
+}
+
+async function deleteAdminProduct(id) {
+    const response = await fetch(`${LEGACY_PRODUCT_BASE}/deleteProduct/${id}`, {method: "DELETE"});
+    if (!response.ok) {
+        showError("Failed to delete product.");
+        return;
+    }
+    await fetchProducts();
+}
+
+async function handleAuthSubmit(event) {
+    event.preventDefault();
+    if (authMode === "login") {
+        const response = await fetch(`${USER_BASE_URL}/login`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({email: authEmail.value, password: authPassword.value})
+        });
+        if (!response.ok) {
+            showError("Invalid login credentials.");
+            return;
+        }
+        const user = await response.json();
+        saveSession(user);
+    } else {
+        const response = await fetch(`${USER_BASE_URL}/addUser`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({
+                name: authName.value,
+                email: authEmail.value,
+                password: authPassword.value,
+                role: authRole.value
+            })
+        });
+        if (!response.ok) {
+            showError("Signup failed.");
+            return;
+        }
+        const user = await response.json();
+        saveSession(user);
+    }
+
+    updateAuthUI();
+    closeAuthDialog();
+    await fetchProducts();
 }
 
 function updateCartItem(productId, action) {
@@ -250,10 +477,21 @@ function registerEvents() {
     cartToggle.addEventListener("click", openCart);
     closeCart.addEventListener("click", closeCartSidebar);
     closeModal.addEventListener("click", closeProductModal);
+    closeAuthModal.addEventListener("click", closeAuthDialog);
     overlay.addEventListener("click", () => {
         closeProductModal();
+        closeAuthDialog();
         closeCartSidebar();
     });
+    loginBtn.addEventListener("click", () => openAuthModal("login"));
+    registerBtn.addEventListener("click", () => openAuthModal("signup"));
+    logoutBtn.addEventListener("click", () => {
+        clearSession();
+        updateAuthUI();
+    });
+    authForm.addEventListener("submit", handleAuthSubmit);
+    adminProductForm.addEventListener("submit", saveAdminProduct);
+    cancelEditBtn.addEventListener("click", resetAdminForm);
 
     modalAddCart.addEventListener("click", () => {
         if (selectedProduct) {
@@ -274,10 +512,35 @@ function registerEvents() {
         }
         updateCartItem(id, action);
     });
+
+    adminProductsList.addEventListener("click", async (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) {
+            return;
+        }
+        const action = target.dataset.action;
+        const id = Number(target.dataset.id);
+        if (!action || Number.isNaN(id)) {
+            return;
+        }
+
+        const product = products.find((item) => item.id === id);
+        if (action === "edit" && product) {
+            fillAdminForm(product);
+            return;
+        }
+
+        if (action === "delete") {
+            await deleteAdminProduct(id);
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
     registerEvents();
+    updateAuthUI();
     syncCartUI();
     await fetchProducts();
+    applyRoute();
+    window.addEventListener("hashchange", applyRoute);
 });

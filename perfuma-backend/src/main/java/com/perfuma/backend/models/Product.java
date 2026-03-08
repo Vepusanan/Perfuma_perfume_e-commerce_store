@@ -1,5 +1,7 @@
 package com.perfuma.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
@@ -19,12 +21,17 @@ public class Product {
 
     private BigDecimal price;
 
+    private Integer size;
+
+    @JsonAlias("stock")
     @Column(name = "stock_quantity")
     private Integer stockQuantity;
 
+    @JsonAlias("imgURL")
     @Column(name = "image_url")
     private String imageUrl;
 
+    @JsonAlias("cat")
     private String category;
 
     public Product() {
@@ -36,6 +43,7 @@ public class Product {
         this.brand = brand;
         this.description = description;
         this.price = price;
+        this.size = 0;
         this.stockQuantity = stockQuantity;
         this.imageUrl = imageUrl;
         this.category = category;
@@ -81,12 +89,30 @@ public class Product {
         this.price = price;
     }
 
+    public Integer getSize() {
+        return size;
+    }
+
+    public void setSize(Integer size) {
+        this.size = size;
+    }
+
     public Integer getStockQuantity() {
         return stockQuantity;
     }
 
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    @JsonProperty("stock")
+    public Integer getStock() {
+        return stockQuantity;
+    }
+
+    @JsonProperty("stock")
+    public void setStock(Integer stock) {
+        this.stockQuantity = stock;
     }
 
     public String getImageUrl() {
@@ -97,11 +123,31 @@ public class Product {
         this.imageUrl = imageUrl;
     }
 
+    @JsonProperty("imgURL")
+    public String getImgURL() {
+        return imageUrl;
+    }
+
+    @JsonProperty("imgURL")
+    public void setImgURL(String imgURL) {
+        this.imageUrl = imgURL;
+    }
+
     public String getCategory() {
         return category;
     }
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    @JsonProperty("cat")
+    public String getCat() {
+        return category;
+    }
+
+    @JsonProperty("cat")
+    public void setCat(String cat) {
+        this.category = cat;
     }
 }
