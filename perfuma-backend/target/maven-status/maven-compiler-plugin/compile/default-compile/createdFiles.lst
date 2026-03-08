@@ -1,0 +1,6 @@
+com/perfuma/backend/config/DataSeeder.class
+com/perfuma/backend/PerfumaApplication.class
+com/perfuma/backend/controllers/ProductController.class
+com/perfuma/backend/services/ProductService.class
+com/perfuma/backend/models/Product.class
+com/perfuma/backend/repositories/ProductRepository.class

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfuma | Luxury E-Commerce Store</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">Perfuma</h1>
+            <div class="nav-actions">
+                <button id="cart-btn" class="cart-btn">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span id="cart-badge" class="cart-badge">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="hero-content">
+            <h2>Discover Your Signature Scent</h2>
+            <p>A curated collection of the world's finest luxury fragrances.</p>
+            <button class="cta-btn" onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})">Shop Now</button>
+        </div>
+    </header>
+
+    <!-- Products Section -->
+    <main id="products-section" class="products-section">
+        <h2 class="section-title">Our Collection</h2>
+        <div id="products-grid" class="products-grid">
+            <!-- Products will be injected here via JS -->
+            <div class="loader">Loading exquisite fragrances...</div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2023 Perfuma. All rights reserved.</p>
+    </footer>
+
+    <!-- Cart Sidebar -->
+    <div id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Your Bag</h2>
+            <button id="close-cart-btn" class="close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <!-- Cart Items injected here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <button class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="overlay"></div>
+
+    <!-- Product Detail Modal -->
+    <div id="product-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal-btn">&times;</span>
+            <div class="modal-grid">
+                <div class="modal-image-col">
+                    <img id="modal-img" src="" alt="Product Image">
+                </div>
+                <div class="modal-details-col">
+                    <h3 id="modal-brand" class="modal-brand"></h3>
+                    <h2 id="modal-title" class="modal-title"></h2>
+                    <p id="modal-desc" class="modal-desc"></p>
+                    <p class="modal-category">Family: <span id="modal-category-text"></span></p>
+                    <div class="modal-bottom">
+                        <span id="modal-price" class="modal-price"></span>
+                        <p id="modal-stock" class="modal-stock"></p>
+                    </div>
+                    <button id="modal-add-btn" class="add-to-cart-btn modal-add-btn">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
