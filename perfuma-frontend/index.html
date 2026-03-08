@@ -3,94 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfuma | Luxury E-Commerce Store</title>
-    <!-- Fonts -->
+    <title>Perfuma - Luxury Perfume Store</title>
+    <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <h1 class="logo">Perfuma</h1>
-            <div class="nav-actions">
-                <button id="cart-btn" class="cart-btn">
-                    <i class="fas fa-shopping-bag"></i>
-                    <span id="cart-badge" class="cart-badge">0</span>
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header class="hero">
-        <div class="hero-content">
-            <h2>Discover Your Signature Scent</h2>
-            <p>A curated collection of the world's finest luxury fragrances.</p>
-            <button class="cta-btn" onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})">Shop Now</button>
+    <header class="site-header" id="home">
+        <div class="container header-content">
+            <a href="#home" class="logo">Perfuma</a>
+            <nav class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#products">Products</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button id="cart-toggle" class="cart-button" aria-label="Open cart">
+                Cart <span id="cart-count" class="cart-count">0</span>
+            </button>
         </div>
     </header>
 
-    <!-- Products Section -->
-    <main id="products-section" class="products-section">
-        <h2 class="section-title">Our Collection</h2>
-        <div id="products-grid" class="products-grid">
-            <!-- Products will be injected here via JS -->
-            <div class="loader">Loading exquisite fragrances...</div>
-        </div>
+    <main>
+        <section class="hero-section">
+            <div class="container hero-grid">
+                <div class="hero-copy">
+                    <p class="hero-kicker">Perfuma Signature Collection</p>
+                    <h1>Luxury scents that stay with you.</h1>
+                    <p>
+                        Discover timeless perfumes crafted with floral, woody, and oriental notes.
+                        Elevate every moment with a fragrance that reflects your style.
+                    </p>
+                    <a href="#products" class="hero-cta">Shop Perfumes</a>
+                </div>
+                <div class="hero-card">
+                    <img
+                        class="hero-image"
+                        src="http://localhost:8080/images/hero.webp"
+                        alt="Perfuma hero fragrance display"
+                    >
+                </div>
+            </div>
+        </section>
+
+        <section class="products-section" id="products">
+            <div class="container">
+                <div class="section-head">
+                    <h2>Our Products</h2>
+                    <p>Curated fragrances from the world's most iconic perfume houses.</p>
+                </div>
+
+                <div class="toolbar">
+                    <input type="text" id="search-input" placeholder="Search by perfume or brand...">
+                    <select id="category-filter" aria-label="Filter products by category">
+                        <option value="all">All Categories</option>
+                        <option value="Floral">Floral</option>
+                        <option value="Oriental">Oriental</option>
+                        <option value="Aquatic">Aquatic</option>
+                        <option value="Woody">Woody</option>
+                        <option value="Floral Oriental">Floral Oriental</option>
+                        <option value="Fougère">Fougère</option>
+                        <option value="Citrus">Citrus</option>
+                        <option value="Oriental Floral">Oriental Floral</option>
+                        <option value="Woody Oud">Woody Oud</option>
+                    </select>
+                </div>
+
+                <div id="loading" class="state-box">Loading perfumes...</div>
+                <div id="error" class="state-box error hidden"></div>
+                <div id="products-grid" class="products-grid"></div>
+            </div>
+        </section>
+
+        <section class="about-section" id="about">
+            <div class="container about-content">
+                <h2>About Perfuma</h2>
+                <p>
+                    At Perfuma, we believe perfume is deeply personal. Every bottle in our collection
+                    is chosen for quality, longevity, and character so you can find a scent that feels uniquely yours.
+                </p>
+            </div>
+        </section>
     </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2023 Perfuma. All rights reserved.</p>
-    </footer>
-
-    <!-- Cart Sidebar -->
-    <div id="cart-sidebar" class="cart-sidebar">
+    <aside id="cart-sidebar" class="cart-sidebar" aria-hidden="true">
         <div class="cart-header">
-            <h2>Your Bag</h2>
-            <button id="close-cart-btn" class="close-btn"><i class="fas fa-times"></i></button>
+            <h3>Your Cart</h3>
+            <button id="close-cart" class="icon-btn" aria-label="Close cart">&times;</button>
         </div>
-        <div id="cart-items" class="cart-items">
-            <!-- Cart Items injected here -->
-        </div>
+        <div id="cart-items" class="cart-items"></div>
         <div class="cart-footer">
-            <div class="cart-total">
-                <span>Total:</span>
-                <span id="cart-total-price">$0.00</span>
-            </div>
-            <button class="checkout-btn">Checkout</button>
+            <p>Total: <strong id="cart-total">$0.00</strong></p>
         </div>
-    </div>
-    <div id="cart-overlay" class="overlay"></div>
+    </aside>
 
-    <!-- Product Detail Modal -->
-    <div id="product-modal" class="modal">
+    <div id="overlay" class="overlay hidden"></div>
+
+    <div id="product-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modal-product-title">
         <div class="modal-content">
-            <span class="close-modal-btn">&times;</span>
-            <div class="modal-grid">
-                <div class="modal-image-col">
-                    <img id="modal-img" src="" alt="Product Image">
-                </div>
-                <div class="modal-details-col">
-                    <h3 id="modal-brand" class="modal-brand"></h3>
-                    <h2 id="modal-title" class="modal-title"></h2>
-                    <p id="modal-desc" class="modal-desc"></p>
-                    <p class="modal-category">Family: <span id="modal-category-text"></span></p>
-                    <div class="modal-bottom">
-                        <span id="modal-price" class="modal-price"></span>
-                        <p id="modal-stock" class="modal-stock"></p>
-                    </div>
-                    <button id="modal-add-btn" class="add-to-cart-btn modal-add-btn">Add to Cart</button>
-                </div>
-            </div>
+            <button id="close-modal" class="icon-btn modal-close" aria-label="Close product details">&times;</button>
+            <img id="modal-image" alt="Perfume image">
+            <h3 id="modal-product-title"></h3>
+            <p id="modal-brand" class="modal-brand"></p>
+            <p id="modal-description"></p>
+            <p id="modal-stock"></p>
+            <p id="modal-price" class="modal-price"></p>
+            <button id="modal-add-cart" class="hero-cta">Add to Cart</button>
         </div>
     </div>
+
+    <footer id="contact" class="site-footer">
+        <div class="container footer-content">
+            <p>Perfuma</p>
+            <p>info@perfuma.com</p>
+            <p>+1 (555) 123-4567</p>
+        </div>
+    </footer>
 
     <script src="app.js"></script>
 </body>

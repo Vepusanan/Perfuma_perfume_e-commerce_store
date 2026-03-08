@@ -10,7 +10,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
-@CrossOrigin(origins = "*") // Allows cross-origin for local frontend
+@CrossOrigin(origins = {
+        "http://localhost:5500",
+        "http://127.0.0.1:5500",
+        "http://localhost:8081",
+        "http://127.0.0.1:8081"
+})
 public class ProductController {
 
     @Autowired

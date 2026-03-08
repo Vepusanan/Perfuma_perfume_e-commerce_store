@@ -1,5 +1,6 @@
 /Users/vepusanan/Desktop/Perfuma_perfume_e-commerce_store/perfuma-backend/src/main/java/com/perfuma/backend/PerfumaApplication.java
 /Users/vepusanan/Desktop/Perfuma_perfume_e-commerce_store/perfuma-backend/src/main/java/com/perfuma/backend/config/DataSeeder.java
+/Users/vepusanan/Desktop/Perfuma_perfume_e-commerce_store/perfuma-backend/src/main/java/com/perfuma/backend/config/WebConfig.java
 /Users/vepusanan/Desktop/Perfuma_perfume_e-commerce_store/perfuma-backend/src/main/java/com/perfuma/backend/controllers/ProductController.java
 /Users/vepusanan/Desktop/Perfuma_perfume_e-commerce_store/perfuma-backend/src/main/java/com/perfuma/backend/models/Product.java
 /Users/vepusanan/Desktop/Perfuma_perfume_e-commerce_store/perfuma-backend/src/main/java/com/perfuma/backend/repositories/ProductRepository.java
