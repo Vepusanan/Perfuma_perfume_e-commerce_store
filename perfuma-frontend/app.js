@@ -52,6 +52,9 @@ const productCategoryInput = document.getElementById("product-category");
 const productImageInput = document.getElementById("product-image");
 const productDescriptionInput = document.getElementById("product-description");
 const heroSection = document.querySelector(".hero-section");
+const featuredSection = document.querySelector(".featured-section");
+const notesSection = document.querySelector(".notes-section");
+const inspirationSection = document.querySelector(".inspiration-section");
 const productsSection = document.getElementById("products");
 const aboutSection = document.getElementById("about");
 
@@ -124,12 +127,15 @@ function updateAuthUI() {
     logoutBtn.classList.toggle("hidden", !loggedIn);
     adminLink.classList.toggle("hidden", !isAdmin());
     adminPanel.classList.toggle("hidden", !isAdmin());
-    cartToggle.classList.toggle("hidden", isAdmin());
+    cartToggle.classList.toggle("hidden", !isCustomer());
     applyRoute();
 }
 
 function setSectionVisibility(showMain, showAdmin) {
     heroSection.classList.toggle("hidden", !showMain);
+    featuredSection?.classList.toggle("hidden", !showMain);
+    notesSection?.classList.toggle("hidden", !showMain);
+    inspirationSection?.classList.toggle("hidden", !showMain);
     productsSection.classList.toggle("hidden", !showMain);
     aboutSection.classList.toggle("hidden", !showMain);
     adminPanel.classList.toggle("hidden", !showAdmin);
@@ -222,6 +228,23 @@ function applyFilters() {
     renderProducts(getFilteredProducts());
 }
 
+function populateCategoryOptions(items) {
+    const current = categoryFilter.value;
+    const categories = Array.from(new Set(items.map((item) => item.category).filter(Boolean))).sort();
+    categoryFilter.innerHTML = '<option value="all">All Categories</option>';
+    categories.forEach((category) => {
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        categoryFilter.appendChild(option);
+    });
+    if ([...categoryFilter.options].some((opt) => opt.value === current)) {
+        categoryFilter.value = current;
+    } else {
+        categoryFilter.value = "all";
+    }
+}
+
 async function fetchProducts() {
     try {
         loadingElement.classList.remove("hidden");
@@ -232,6 +255,7 @@ async function fetchProducts() {
             throw new Error(`Request failed with status ${response.status}`);
         }
         products = await response.json();
+        populateCategoryOptions(products);
         renderProducts(products);
         renderAdminProducts();
     } catch (error) {

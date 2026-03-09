@@ -15,18 +15,26 @@
 
 html {
     scroll-behavior: smooth;
+    width: 100%;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
     font-family: 'Lato', sans-serif;
-    background: var(--ivory);
+    background: radial-gradient(circle at top, #f3ebe2 0%, #e8ddd0 55%, #d8cab8 100%);
     color: var(--charcoal);
     line-height: 1.6;
+    width: 100%;
+    min-height: 100%;
+    overflow-x: hidden;
 }
 
 .container {
     width: min(1120px, 92%);
     margin: 0 auto;
+    padding-inline: 0;
 }
 
 .hidden {
@@ -47,6 +55,7 @@ body {
     align-items: center;
     justify-content: space-between;
     min-height: 74px;
+    padding-inline: 0;
 }
 
 .logo {
@@ -109,6 +118,16 @@ body {
     padding: 3.8rem 0;
 }
 
+.luxury-main {
+    width: min(1120px, 94%);
+    margin: 1.4rem auto 2rem;
+    background: linear-gradient(180deg, #4b0715 0%, #2f0410 100%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.8rem;
+    color: #f9edf0;
+    overflow: hidden;
+}
+
 .hero-grid {
     display: grid;
     grid-template-columns: 1.1fr 0.9fr;
@@ -132,6 +151,7 @@ body {
 
 .hero-copy p {
     max-width: 52ch;
+    color: #f3d7dd;
 }
 
 .hero-cta {
@@ -156,6 +176,7 @@ body {
     height: 360px;
     box-shadow: 0 14px 30px var(--shadow);
     overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .hero-image {
@@ -169,6 +190,77 @@ body {
     padding: 3rem 0 4rem;
 }
 
+.featured-section {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.featured-row {
+    min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.9rem;
+    flex-wrap: wrap;
+    color: #f6dee4;
+    font-size: 0.95rem;
+}
+
+.luxury-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.8rem;
+}
+
+.notes-section {
+    padding: 2.2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+}
+
+.note-card {
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 0.45rem;
+    padding: 0.9rem;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.note-card h3 {
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 0.3rem;
+}
+
+.note-card p {
+    color: #f3d7dd;
+}
+
+.inspiration-section {
+    padding: 2.2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.inspiration-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: center;
+}
+
+.inspiration-grid p {
+    color: #f3d7dd;
+}
+
+.inspiration-media img {
+    width: 100%;
+    border-radius: 0.55rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
 .section-head {
     margin-bottom: 1.2rem;
 }
@@ -176,6 +268,11 @@ body {
 .section-head h2 {
     font-family: 'Playfair Display', serif;
     font-size: 2rem;
+    color: #fff4f6;
+}
+
+.section-head p {
+    color: #f3d7dd;
 }
 
 .toolbar {
@@ -242,16 +339,23 @@ body {
 
 .product-body {
     padding: 0.9rem;
+    color: #2b2b2b;
 }
 
 .product-title {
     font-family: 'Playfair Display', serif;
     font-size: 1.18rem;
+    color: #2c2c2c;
 }
 
 .product-brand {
-    color: #6a6a6a;
+    color: #3c3c3c;
     font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.product-body p {
+    color: #6a6a6a;
 }
 
 .product-bottom {
@@ -265,6 +369,11 @@ body {
 .product-price {
     font-weight: 700;
     color: var(--rose-gold);
+}
+
+.product-bottom span:last-child {
+    color: #6a6a6a;
+    font-weight: 600;
 }
 
 .button-row {
@@ -350,6 +459,11 @@ body {
 .about-content h2 {
     font-family: 'Playfair Display', serif;
     margin-bottom: 0.6rem;
+    color: #fff4f6;
+}
+
+.about-content p {
+    color: #f3d7dd;
 }
 
 .cart-sidebar {
@@ -480,6 +594,8 @@ body {
     border-top: 1px solid #eadfce;
     padding: 1.4rem 0;
     margin-top: 1rem;
+    background: #1e0209;
+    color: #f8e7eb;
 }
 
 .footer-content {
@@ -501,12 +617,21 @@ body {
         gap: 0.8rem;
     }
 
+    .featured-row {
+        justify-content: flex-start;
+    }
+
     .admin-form {
         grid-template-columns: 1fr;
     }
 
     .admin-form textarea {
         grid-column: span 1;
+    }
+
+    .notes-grid,
+    .inspiration-grid {
+        grid-template-columns: 1fr;
     }
 }
 

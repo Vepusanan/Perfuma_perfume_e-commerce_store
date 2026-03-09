@@ -25,30 +25,80 @@
                 <button id="register-btn" class="plain-button">Signup</button>
                 <button id="logout-btn" class="plain-button hidden">Logout</button>
             </div>
-            <button id="cart-toggle" class="cart-button" aria-label="Open cart">
+            <button id="cart-toggle" class="cart-button hidden" aria-label="Open cart">
                 Cart <span id="cart-count" class="cart-count">0</span>
             </button>
         </div>
     </header>
 
-    <main>
+    <main class="luxury-main">
         <section class="hero-section">
             <div class="container hero-grid">
                 <div class="hero-copy">
-                    <p class="hero-kicker">Perfuma Signature Collection</p>
-                    <h1>Luxury scents that stay with you.</h1>
+                    <p class="hero-kicker">MON CHERIE</p>
+                    <h1>A captivating fragrance blending dark cherry, delicate florals, and warm woods.</h1>
                     <p>
-                        Discover timeless perfumes crafted with floral, woody, and oriental notes.
-                        Elevate every moment with a fragrance that reflects your style.
+                        Cherry opens with a bold and rich fruity note, layered with soft florals and silky woody tones.
+A signature scent designed for elegant evenings, confident moments, and unforgettable impressions.
                     </p>
                     <a href="#products" class="hero-cta">Shop Perfumes</a>
                 </div>
                 <div class="hero-card">
                     <img
                         class="hero-image"
-                        src="http://localhost:8080/images/hero.webp"
+                        src="http://localhost:8080/images/hero1.jpeg"
                         alt="Perfuma hero fragrance display"
                     >
+                </div>
+            </div>
+        </section>
+
+        <section class="featured-section">
+            <div class="container featured-row">
+                <span>FEATURED IN</span>
+                <span>VOGUE</span>
+                <span>COSMOPOLITAN</span>
+                <span>Women's Weekly</span>
+                <span>CELEB</span>
+            </div>
+        </section>
+
+        <section class="notes-section">
+            <div class="container">
+                <h2 class="luxury-title">Notes</h2>
+                <div class="notes-grid">
+                    <article class="note-card">
+                        <h3>Cherry</h3>
+                        <p>A bold fruity opening that delivers a rich and seductive aroma.</p>
+                    </article>
+                    <article class="note-card">
+                        <h3>Wood</h3>
+                        <p>Smooth sandalwood layers that create warmth and depth.</p>
+                    </article>
+                    <article class="note-card">
+                        <h3>Musk</h3>
+                        <p>Soft and velvety musk that gives a clean, elegant finish.</p>
+                    </article>
+                    <article class="note-card">
+                        <h3>Vanilla</h3>
+                        <p>A creamy sweetness that balances floral and woody notes perfectly.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="inspiration-section">
+            <div class="container inspiration-grid">
+                <div>
+                    <h2 class="luxury-title">Inspiration</h2>
+                    <p>
+                        Mon Cherie is inspired by cinematic midnight moments and timeless elegance.
+
+                        The fragrance reflects mystery, softness, and confidence — designed for those who want their presence remembered long after they leave the room.
+                    </p>
+                </div>
+                <div class="inspiration-media">
+                    <img src="http://localhost:8080/images/hero2.webp" alt="Perfuma inspiration visual">
                 </div>
             </div>
         </section>
@@ -57,22 +107,13 @@
             <div class="container">
                 <div class="section-head">
                     <h2>Our Products</h2>
-                    <p>Curated fragrances from the world's most iconic perfume houses.</p>
+                    <p>Discover a curated selection of premium fragrances from some of the world’s most iconic perfume houses.</p>
                 </div>
 
                 <div class="toolbar">
                     <input type="text" id="search-input" placeholder="Search by perfume or brand...">
                     <select id="category-filter" aria-label="Filter products by category">
                         <option value="all">All Categories</option>
-                        <option value="Floral">Floral</option>
-                        <option value="Oriental">Oriental</option>
-                        <option value="Aquatic">Aquatic</option>
-                        <option value="Woody">Woody</option>
-                        <option value="Floral Oriental">Floral Oriental</option>
-                        <option value="Fougère">Fougère</option>
-                        <option value="Citrus">Citrus</option>
-                        <option value="Oriental Floral">Oriental Floral</option>
-                        <option value="Woody Oud">Woody Oud</option>
                     </select>
                 </div>
 
@@ -85,9 +126,8 @@
         <section class="about-section" id="about">
             <div class="container about-content">
                 <h2>About Perfuma</h2>
-                <p>
-                    At Perfuma, we believe perfume is deeply personal. Every bottle in our collection
-                    is chosen for quality, longevity, and character so you can find a scent that feels uniquely yours.
+                <p>At Perfuma, we believe fragrance is deeply personal.
+                    Our collection features carefully selected perfumes known for quality, longevity, and unique character. Whether you prefer fresh citrus notes, elegant florals, or deep woody scents, Perfuma helps you discover a fragrance that truly represents you.
                 </p>
             </div>
         </section>
@@ -163,7 +203,7 @@
         <div class="container footer-content">
             <p>Perfuma</p>
             <p>info@perfuma.com</p>
-            <p>+1 (555) 123-4567</p>
+            <p>+94 77 123 4567</p>
         </div>
     </footer>
 
