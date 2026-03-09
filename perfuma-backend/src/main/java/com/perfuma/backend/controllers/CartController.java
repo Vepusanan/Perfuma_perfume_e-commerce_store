@@ -19,10 +19,14 @@ public class CartController {
     private CartService cartService;
 
     @PostMapping("/addToCart")
-    public ResponseEntity<CartItem> addToCart(@RequestBody AddToCartRequest request) {
-        return cartService.addToCart(request)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.badRequest().build());
+    public ResponseEntity<?> addToCart(@RequestBody AddToCartRequest request) {
+        try {
+            return cartService.addToCart(request)
+                    .<ResponseEntity<?>>map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.badRequest().body("Invalid user or product."));
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @GetMapping("/user/{userId}")
@@ -31,10 +35,14 @@ public class CartController {
     }
 
     @PutMapping("/updateCart/{cartId}")
-    public ResponseEntity<CartItem> updateCart(@PathVariable Long cartId, @RequestBody UpdateCartRequest request) {
-        return cartService.updateCart(cartId, request)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> updateCart(@PathVariable Long cartId, @RequestBody UpdateCartRequest request) {
+        try {
+            return cartService.updateCart(cartId, request)
+                    .map(ResponseEntity::ok)
+                    .orElse(ResponseEntity.notFound().build());
+        } catch (IllegalStateException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @DeleteMapping("/delete/{cartId}")

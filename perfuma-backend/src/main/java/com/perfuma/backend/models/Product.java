@@ -28,7 +28,8 @@ public class Product {
     private Integer stockQuantity;
 
     @JsonAlias("imgURL")
-    @Column(name = "image_url")
+    @Lob
+    @Column(name = "image_url", columnDefinition = "LONGTEXT")
     private String imageUrl;
 
     @JsonAlias("cat")

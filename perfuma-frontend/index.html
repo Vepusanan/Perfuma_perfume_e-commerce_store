@@ -46,7 +46,7 @@ A signature scent designed for elegant evenings, confident moments, and unforget
                 <div class="hero-card">
                     <img
                         class="hero-image"
-                        src="http://localhost:8080/images/hero1.jpeg"
+                        src="http://localhost:8080/images/hero.jpeg"
                         alt="Perfuma hero fragrance display"
                     >
                 </div>
@@ -98,7 +98,7 @@ A signature scent designed for elegant evenings, confident moments, and unforget
                     </p>
                 </div>
                 <div class="inspiration-media">
-                    <img src="http://localhost:8080/images/hero2.webp" alt="Perfuma inspiration visual">
+                    <img src="http://localhost:8080/images/hero2.jpeg" alt="Perfuma inspiration visual">
                 </div>
             </div>
         </section>
@@ -146,12 +146,17 @@ A signature scent designed for elegant evenings, confident moments, and unforget
                     <input id="product-stock" type="number" placeholder="Stock" required>
                     <input id="product-size" type="number" placeholder="Size">
                     <input id="product-category" placeholder="Category" required>
-                    <input id="product-image" placeholder="Image URL" required>
+                    <input id="product-image" type="file" accept="image/*">
                     <textarea id="product-description" placeholder="Description" required></textarea>
                     <button class="hero-cta" type="submit">Save Product</button>
                     <button class="plain-button" id="cancel-edit" type="button">Cancel</button>
                 </form>
                 <div id="admin-products-list" class="admin-products-list"></div>
+                <div class="section-head orders-head">
+                    <h2>Orders Monitoring</h2>
+                    <p>Track COD orders and update their status manually.</p>
+                </div>
+                <div id="admin-orders-list" class="admin-products-list"></div>
             </div>
         </section>
     </main>
@@ -164,6 +169,7 @@ A signature scent designed for elegant evenings, confident moments, and unforget
         <div id="cart-items" class="cart-items"></div>
         <div class="cart-footer">
             <p>Total: <strong id="cart-total">$0.00</strong></p>
+            <button id="checkout-btn" class="hero-cta cart-checkout-btn" type="button">Checkout (Cash on Delivery)</button>
         </div>
     </aside>
 

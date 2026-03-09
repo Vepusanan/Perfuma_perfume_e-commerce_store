@@ -17,8 +17,11 @@ public class OrderController {
     private OrderService orderService;
 
     @PostMapping("/checkout/{userId}")
-    public ResponseEntity<Order> checkout(@PathVariable Long userId) {
-        return orderService.checkout(userId)
+    public ResponseEntity<Order> checkout(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "CASH_ON_DELIVERY") String paymentMethod
+    ) {
+        return orderService.checkout(userId, paymentMethod)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.badRequest().build());
     }
@@ -26,5 +29,17 @@ public class OrderController {
     @GetMapping("/user/{userId}")
     public List<Order> getOrdersByUser(@PathVariable Long userId) {
         return orderService.getOrdersByUser(userId);
+    }
+
+    @GetMapping("/all")
+    public List<Order> getAllOrders() {
+        return orderService.getAllOrders();
+    }
+
+    @PutMapping("/{orderId}/status")
+    public ResponseEntity<Order> updateOrderStatus(@PathVariable Long orderId, @RequestParam String status) {
+        return orderService.updateOrderStatus(orderId, status)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
