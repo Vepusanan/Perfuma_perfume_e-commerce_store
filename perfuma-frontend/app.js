@@ -45,7 +45,7 @@ const authForm = document.getElementById("auth-form");
 const authName = document.getElementById("auth-name");
 const authEmail = document.getElementById("auth-email");
 const authPassword = document.getElementById("auth-password");
-const authRole = document.getElementById("auth-role");
+const passwordStrengthText = document.getElementById("password-strength-text");
 const productIdInput = document.getElementById("product-id");
 const productNameInput = document.getElementById("product-name");
 const productBrandInput = document.getElementById("product-brand");
@@ -402,7 +402,11 @@ function openAuthModal(mode) {
     authMode = mode;
     authModalTitle.textContent = mode === "login" ? "Login" : "Signup";
     authName.classList.toggle("hidden", mode === "login");
-    authRole.classList.toggle("hidden", mode === "login");
+    passwordStrengthText.classList.toggle("hidden", mode === "login");
+    if (mode === "login") {
+        passwordStrengthText.textContent = "";
+        passwordStrengthText.className = "password-strength-text hidden";
+    }
     authModal.classList.remove("hidden");
     overlay.classList.remove("hidden");
 }
@@ -598,18 +602,24 @@ async function handleAuthSubmit(event) {
         const user = await response.json();
         saveSession(user);
     } else {
+        const passwordCheck = getPasswordStrength(authPassword.value);
+        if (!passwordCheck.valid) {
+            showError(passwordCheck.message);
+            return;
+        }
+
         const response = await fetch(`${USER_BASE_URL}/addUser`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({
                 name: authName.value,
                 email: authEmail.value,
-                password: authPassword.value,
-                role: authRole.value
+                password: authPassword.value
             })
         });
         if (!response.ok) {
-            showError("Signup failed.");
+            const message = await response.text();
+            showError(message || "Signup failed.");
             return;
         }
         const user = await response.json();
@@ -626,6 +636,42 @@ async function handleAuthSubmit(event) {
         saveCart();
         syncCartUI();
     }
+}
+
+function getPasswordStrength(password) {
+    if (!password || password.length < 8) {
+        return {
+            score: "weak",
+            valid: false,
+            message: "Password must be at least 8 characters."
+        };
+    }
+
+    const hasLower = /[a-z]/.test(password);
+    const hasUpper = /[A-Z]/.test(password);
+    const hasNumber = /\d/.test(password);
+    const hasSpecial = /[^A-Za-z0-9]/.test(password);
+    const score = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
+
+    if (score <= 2) {
+        return {
+            score: "weak",
+            valid: false,
+            message: "Weak password: include uppercase, lowercase, number, and special character."
+        };
+    }
+    if (score === 3) {
+        return {
+            score: "medium",
+            valid: false,
+            message: "Medium password: add one more rule (uppercase/lowercase/number/special)."
+        };
+    }
+    return {
+        score: "strong",
+        valid: true,
+        message: "Strong password."
+    };
 }
 
 async function updateCartItem(productId, action) {
@@ -747,6 +793,15 @@ function registerEvents() {
     });
     checkoutBtn.addEventListener("click", checkoutCashOnDelivery);
     authForm.addEventListener("submit", handleAuthSubmit);
+    authPassword.addEventListener("input", () => {
+        if (authMode !== "signup") {
+            return;
+        }
+        const strength = getPasswordStrength(authPassword.value);
+        passwordStrengthText.classList.remove("hidden", "weak", "medium", "strong");
+        passwordStrengthText.classList.add(strength.score);
+        passwordStrengthText.textContent = strength.message;
+    });
     adminProductForm.addEventListener("submit", saveAdminProduct);
     cancelEditBtn.addEventListener("click", resetAdminForm);
 

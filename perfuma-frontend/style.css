@@ -495,6 +495,23 @@ body {
     font: inherit;
 }
 
+.password-strength-text {
+    font-size: 0.88rem;
+    color: #5b1a2b;
+}
+
+.password-strength-text.weak {
+    color: #b3261e;
+}
+
+.password-strength-text.medium {
+    color: #9a6b00;
+}
+
+.password-strength-text.strong {
+    color: #2e7d32;
+}
+
 .about-content h2 {
     font-family: 'Playfair Display', serif;
     margin-bottom: 0.6rem;
